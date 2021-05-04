@@ -1,57 +1,46 @@
 package de.neuefische.studentdbweb.service;
 
+import de.neuefische.studentdbweb.db.StudentDb;
 import de.neuefische.studentdbweb.model.Student;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class StudentService {
 
-    private final List<Student> students;
-
-    public StudentService(List<Student> students) {
-        this.students = new ArrayList<>(students);
-    }
+    private StudentDb students;
 
     public List<Student> list() {
-        return students;
+        return students.list();
     }
 
     public Optional<Student> findById(String id) {
-        for (Student student : students) {
-            if(student.getId().equals(id)){
-                return Optional.of(student);
-            }
-        }
-        return Optional.empty();
+        return students.findById(id);
     }
 
     public List<Student> filterStudentByName(String searchString) {
         List<Student> filteredStudents = new ArrayList<>();
 
-        for (Student student : students) {
+        for (Student student : students.list()) {
             if(student.getName().toLowerCase().contains(searchString.toLowerCase())){
                 filteredStudents.add(student);
             }
         }
-
         return filteredStudents;
     }
 
     public void addStudent(Student student) {
         //check if exists and update
-        students.add(student);
+        students.addStudent(student);
     }
 
     public void removeStudent(String id) {
-        if (findById(id).isPresent()) {
-            students.remove(findById(id).get());
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No student with this id exists.");
-        }
+        students.removeStudent(id);
     }
 
     public void updateStudent(Student student) {

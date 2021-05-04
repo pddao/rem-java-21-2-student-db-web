@@ -13,10 +13,7 @@ import static org.hamcrest.Matchers.is;
 class StudentServiceTest {
 
 
-    private final StudentService service = new StudentService(List.of(
-            new Student("1", "Frank"),
-            new Student("2", "Jan")
-    ));
+    private final StudentService service = new StudentService();
 
     @Test
     public void listShouldReturnAllStudents(){
