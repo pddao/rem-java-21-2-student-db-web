@@ -54,8 +54,9 @@ public class StudentService {
         }
     }
 
-    public void updateStudent(String id) {
-        
+    public void updateStudent(Student student) {
+        removeStudent(student.getId());
+        addStudent(student);
     }
 
 }

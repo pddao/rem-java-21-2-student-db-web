@@ -33,10 +33,23 @@ public class StudentController {
         return optionalStudent.orElse(null);
     }
 
+//    @PutMapping("{id}")
+//    public void addStudent(@Valid @RequestBody Student student, @PathVariable String id) {
+//        if (id.equals(student.getId())) {
+//            studentService.addStudent(student);
+//        } else {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "id not matching");
+//        }
+//    }
+
     @PutMapping("{id}")
-    public void addStudent(@Valid @RequestBody Student student, @PathVariable String id) {
+    public void upsertStudent(@Valid @RequestBody Student student, @PathVariable String id) {
         if (id.equals(student.getId())) {
-            studentService.addStudent(student);
+            if (studentService.findById(id).isEmpty()) {
+                studentService.addStudent(student);
+            } else {
+                studentService.updateStudent(student);
+            }
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "id not matching");
         }
