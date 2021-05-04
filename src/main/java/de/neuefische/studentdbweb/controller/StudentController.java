@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class StudentController {
     }
 
     @PutMapping("{id}")
-    public void addStudent(@RequestBody Student student, @PathVariable String id) {
+    public void addStudent(@Valid @RequestBody Student student, @PathVariable String id) {
         if (id.equals(student.getId())) {
             studentService.addStudent(student);
         } else {
