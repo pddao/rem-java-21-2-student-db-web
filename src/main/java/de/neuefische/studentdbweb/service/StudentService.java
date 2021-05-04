@@ -1,6 +1,8 @@
 package de.neuefische.studentdbweb.service;
 
 import de.neuefische.studentdbweb.model.Student;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,4 +40,18 @@ public class StudentService {
 
         return filteredStudents;
     }
+
+    public void addStudent(Student student) {
+        //check if exists and update
+        students.add(student);
+    }
+
+    public void removeStudent(String id) {
+        if (findById(id).isPresent()) {
+            students.remove(findById(id).get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No student with this id exists.");
+        }
+    }
+
 }
